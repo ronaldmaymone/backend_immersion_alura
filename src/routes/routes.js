@@ -1,5 +1,5 @@
 import express from "express";
-import { fetchAllPosts } from "../controllers/posts_controller.js";
+import { createNewPost, fetchAllPosts } from "../controllers/posts_controller.js";
 
 const posts = [
     {
@@ -40,6 +40,8 @@ const routes = (app) => {
     app.get("/posts/:id", (req, res) => {
         res.status(200).json(posts[req.params.id - 1]);
     })
+
+    app.post("/posts", createNewPost)
 }
 
 export default routes;
