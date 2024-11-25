@@ -1,6 +1,15 @@
 import express from "express";
 import multer from "multer";
-import { createNewPost, fetchAllPosts, uploadImg } from "../controllers/posts_controller.js";
+import cors from "cors";
+import { createNewPost, fetchAllPosts, updatePost, uploadImg } from "../controllers/posts_controller.js";
+
+
+const corsOptions = {
+  origin: "http://localhost:8000",
+  optionsSuccessStatus: 200, 
+  // methods: "GET, POST, PUT, DELETE",
+  // allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -15,6 +24,8 @@ const upload = multer({ dest: "./uploads" , storage})
 
 const routes = (app) => {
     app.use(express.json());
+    app.use(cors(corsOptions));
+
     app.get("/api", (req, res) => {
         res.status(200).send("Hello World! This is the API endpoint. To test, visit /api");
     });
@@ -27,6 +38,7 @@ const routes = (app) => {
 
     app.post("/posts", createNewPost);
     app.post("/upload",upload.single("img"), uploadImg);
+    app.put("/upload/:id", updatePost)
 }
 
 export default routes;
